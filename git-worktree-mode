@@ -5,9 +5,14 @@ unused=`git log -n1` || exit 1
 branch=`git branch --show-current` || exit 1
 root=`git rev-parse --show-toplevel` || exit 1
 cd "$root" || exit 1
+git diff --staged --quiet
+case $? in 1)
+    had_staged_changes=true || exit 1
+    git commit --quiet --message 'git-worktree-mode temporary commit'
+esac
 git diff --quiet
 case $? in 1)
-    stashed=true || exit 1
+    had_unstaged_changes=true || exit 1
     git stash --quiet || exit 1
 esac
 git rm -r --force --quiet --ignore-unmatch . || exit 1
@@ -20,6 +25,10 @@ do
     esac
 done
 cd "$branch" || exit 1
-case $stashed in true)
+case $had_staged_changes in true)
+    git reset --quiet HEAD~1 || exit 1
+    git add --all || exit 1
+esac
+case $had_unstaged_changes in true)
     git stash pop --quiet || exit 1
 esac
