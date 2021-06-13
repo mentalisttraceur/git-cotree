@@ -1,15 +1,17 @@
-A script which prepares a Git repository
-for a `git worktree`-centric workflow.
+A script which puts your local copy of a Git repository
+into a state which is very ergonomic if you want to use
+multiple `git worktree` directories.
 
-This script assumes you have a normal Git repo,
-and converts it into a state which is very clean
-if you want to switch to a workflow where every
-checkout is in a `git worktree` instead of in
-one central working directory.
+This script is especially helpful if you want to start
+using `git worktree` but you have already been working
+in a normally cloned Git repo.
 
-Your current work will be automatically
-moved into a worktree named after your
-current branch for you.
+Your current work will be automatically moved into
+a worktree named after your current branch. Staged
+changes, unstaged changes, and untracked files are
+all preserved and moved there as well.
+
+Example, using this repo itself to demonstrate:
 
 ```sh
 $ git clone https://github.com/mentalisttraceur/git-worktree-mode
@@ -39,17 +41,3 @@ Your branch is up to date with 'origin/master'.
 
 nothing to commit, working tree clean
 ```
-
-The script itself should be extremely safe and
-robust, never losing repository configuration,
-uncommitted changes, or untracked files. Of
-course, a bug might have slipped in, so maybe
-back up anything important before running it.
-
-The whole approach and repository setup to
-achieve the best `git worktree`-centric user
-experience is something I only just now came
-up with - it seems to work so far and I am
-already dogfooding it (including for this repo
-as I write this!), but maybe I just haven't
-discovered some serious lurking flaw yet.
