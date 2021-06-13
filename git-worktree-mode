@@ -16,7 +16,7 @@ git worktree add --quiet "$branch" "$branch" || exit 1
 for untracked_file in * .*
 do
     case $untracked_file in "$branch" | .. | . | .git) :;; *)
-        mv "$untracked_file" "$branch"/ || exit 1
+        mv ./"$untracked_file" "$branch"/ || exit 1
     esac
 done
 cd "$branch" || exit 1
