@@ -1,12 +1,9 @@
 A script which puts your local copy of a Git repository
-into a state which is very ergonomic if you want to use
-multiple `git worktree` directories.
+into a state which makes using multiple `git worktree`
+directories very ergonomic.
 
-This script is especially helpful if you want to start
-using `git worktree`, but you want the experience to
-be mor ergonomic, and you have already been working in
-a normally cloned Git repository.
-
+This script is especially helpful if you want to switch
+an existing local copy of a repository into this state.
 Your current work will be automatically moved into
 a worktree named after your current branch. Staged
 changes, unstaged changes, and untracked files are
