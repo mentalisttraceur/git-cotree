@@ -3,8 +3,9 @@ into a state which is very ergonomic if you want to use
 multiple `git worktree` directories.
 
 This script is especially helpful if you want to start
-using `git worktree` but you have already been working
-in a normally cloned Git repo.
+using `git worktree`, but you want the experience to
+be mor ergonomic, and you have already been working in
+a normally cloned Git repository.
 
 Your current work will be automatically moved into
 a worktree named after your current branch. Staged
