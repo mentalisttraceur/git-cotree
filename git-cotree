@@ -44,3 +44,11 @@ create()
     branch=${2-"$1"} || exit 1
     git worktree add "$directory" "$branch" || exit 1
 }
+
+delete()
+{
+    directory=$1 || exit 1
+    force=$2 || exit 1
+    git worktree remove "$force" "$directory" || exit 1
+    git branch --delete "$force" "$directory" || exit 1
+}
