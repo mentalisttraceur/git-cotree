@@ -1,35 +1,39 @@
 #!/bin/sh -
 # SPDX-License-Identifier: 0BSD
 # Copyright 2021 Alexander Kozhevnikov <mentalisttraceur@gmail.com>
-unused=`git log -n1` || exit 1
-branch=`git branch --show-current` || exit 1
-root=`git rev-parse --show-toplevel` || exit 1
-cd "$root" || exit 1
-git diff --staged --quiet
-case $? in 1)
-    had_staged_changes=true || exit 1
-    git commit --quiet --message 'git-cotree temporary commit' || exit 1
-esac
-git diff --quiet
-case $? in 1)
-    had_unstaged_changes=true || exit 1
-    git stash --quiet || exit 1
-esac
-git rm -r --force --quiet --ignore-unmatch . || exit 1
-git config --local core.bare true || exit 1
-git worktree add --quiet "$branch" "$branch" || exit 1
-cd "$branch" || exit 1
-case $had_staged_changes in true)
-    git reset --quiet HEAD~1 || exit 1
-    git add --all || exit 1
-esac
-case $had_unstaged_changes in true)
-    git stash pop --quiet || exit 1
-esac
-cd "$root" || exit 1
-for untracked_file in * .*
-do
-    case $untracked_file in "$branch" | .. | . | .git) :;; *)
-        mv ./"$untracked_file" "$branch"/ || exit 1
+
+initialize()
+{
+    unused=`git log -n1` || exit 1
+    branch=`git branch --show-current` || exit 1
+    root=`git rev-parse --show-toplevel` || exit 1
+    cd "$root" || exit 1
+    git diff --staged --quiet
+    case $? in 1)
+        had_staged_changes=true || exit 1
+        git commit --quiet --message 'git-cotree temporary commit' || exit 1
     esac
-done
+    git diff --quiet
+    case $? in 1)
+        had_unstaged_changes=true || exit 1
+        git stash --quiet || exit 1
+    esac
+    git rm -r --force --quiet --ignore-unmatch . || exit 1
+    git config --local core.bare true || exit 1
+    git worktree add --quiet "$branch" "$branch" || exit 1
+    cd "$branch" || exit 1
+    case $had_staged_changes in true)
+        git reset --quiet HEAD~1 || exit 1
+        git add --all || exit 1
+    esac
+    case $had_unstaged_changes in true)
+        git stash pop --quiet || exit 1
+    esac
+    cd "$root" || exit 1
+    for untracked_file in * .*
+    do
+        case $untracked_file in "$branch" | .. | . | .git) :;; *)
+            mv ./"$untracked_file" "$branch"/ || exit 1
+        esac
+    done
+}
