@@ -37,3 +37,10 @@ initialize()
         esac
     done
 }
+
+create()
+{
+    directory=$1 || exit 1
+    branch=${2-"$1"} || exit 1
+    git worktree add "$directory" "$branch" || exit 1
+}
