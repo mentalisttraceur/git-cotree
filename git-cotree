@@ -76,13 +76,16 @@ delete()
     done
 }
 
+action=create
 for argument
 do
     case $argument in
-    -i | --init | --initialize) shift 1 && initialize "$@"; exit $?;;
-    -d | --delete) shift 1 && delete "$@"; exit $?;;
-    -f | --force) shift 1 && force=--force || exit 1;;
-    -fd | -df) shift 1 && force=--force && delete "$@"; exit $?;;
-    *) create "$@"; exit $?;;
+    -i | --init | --initialize) action=initialize || exit 1;;
+    -d | --delete) action=delete || exit 1;;
+    -f | --force) force=--force || exit 1;;
+    -fd | -df) force=--force && action=delete || exit 1;;
+    *) break;;
     esac
+    shift 1
 done
+"$action" "$@"
