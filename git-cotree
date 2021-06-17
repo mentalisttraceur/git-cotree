@@ -82,6 +82,7 @@ do
     -i | --init | --initialize) shift 1 && initialize "$@"; exit $?;;
     -d | --delete) shift 1 && delete "$@"; exit $?;;
     -f | --force) shift 1 && force=--force || exit 1;;
+    -fd | -df) shift 1 && force=--force && delete "$@"; exit $?;;
     *) create "$@"; exit $?;;
     esac
 done
