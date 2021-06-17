@@ -1,4 +1,4 @@
-# Git "Co-Tree"
+# Git Co-Tree
 
 `git-cotree` implements an ergonomic approach to
 using multiple Git work trees which I am calling
@@ -28,13 +28,12 @@ you don't know what this means you're probably
 fine, but if you know you did something like
 `git clone` with the `--bare` option, `git init`
 with the `--separate-git-dir` option, or `git
-worktree add`, then before running `git-cotree`,
-make sure you understand what `git-cotree` does
-before running it.
+worktree add`, then make sure you understand
+what `git-cotree` does before running it.
 
-Run `git-cotree --initialize` (`--initialize` can
-be abbreviated to `--init` or `-i`) inside an
-existing repo to get started.
+Run `git-cotree --initialize` (can be
+shortened to `--init` or `-i`) inside
+an existing repo to get started.
 
 1. Your repository will be rearranged and
    set up for the co-tree workflow.
