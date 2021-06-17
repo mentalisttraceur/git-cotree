@@ -76,10 +76,28 @@ delete()
     done
 }
 
+help()
+{
+    echo \
+'Usage:
+    git-cotree <directory> [<commit-ish>]
+    git-cotree --delete [--force] <directory>
+    git-cotree --initialize
+
+Options:
+    -h --help               Show this help text.
+    -i --init --initialize  Set up the repository for co-trees.
+    -d --delete             Delete a co-tree. This tries deleting
+                            both the worktree and the branch.
+    -f --force              Force deleting the co-tree branch,
+                            even if there are unmerged changes.'
+}
+
 action=create
 for argument
 do
     case $argument in
+    -h | --help) help; exit $?;;
     -i | --init | --initialize) action=initialize || exit 1;;
     -d | --delete) action=delete || exit 1;;
     -f | --force) force=--force || exit 1;;
