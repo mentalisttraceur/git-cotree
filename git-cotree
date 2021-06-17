@@ -76,6 +76,11 @@ delete()
     done
 }
 
+bad_option()
+{
+    printf '%s\n' "git-cotree: bad option: $1" 1>&2
+}
+
 help()
 {
     echo \
@@ -102,6 +107,7 @@ do
     -d | --delete) action=delete || exit 1;;
     -f | --force) force=--force || exit 1;;
     -fd | -df) force=--force && action=delete || exit 1;;
+    -*) bad_option "$1"; exit 1;;
     *) break;;
     esac
     shift 1
