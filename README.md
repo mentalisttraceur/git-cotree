@@ -40,8 +40,8 @@ an existing repo to get started.
 2. The changes are entirely local. Your next push
    won't change anything for your teammates,
    unless you somehow defeat Git in weird ways.
-3. All your staged changes, unstaged changes, and
-   untracked files will all be preserved.
+3. All your staged changes, unstaged changes,
+   and untracked files will be preserved.
 
 If you like to explore on your own, take a look at
 the `git-cotree --help` output, and play around.
