@@ -1,74 +1,50 @@
-A script which puts your local copy of a Git repository
-into a state which makes using multiple `git worktree`
-directories very ergonomic.
+# Git "Co-Tree"
 
-This script is especially helpful if you want to switch
-an existing local copy of a repository into this state.
-Your current work will be automatically moved into
-a worktree named after your current branch. Staged
-changes, unstaged changes, and untracked files are
-all preserved and moved there as well.
+`git-cotree` implements an ergonomic approach to
+using multiple Git work trees which I am calling
+"co-trees".
 
-Example, using this repo itself to demonstrate:
+Concretely, `git-cotree` is a minimalistic,
+opinionated, and ergonomic wrapper/"porcelain"
+around the core functionality of `git worktree`,
+`git branch`, and `git checkout`.
 
-```sh
-$ git clone https://github.com/mentalisttraceur/git-worktree-mode
-Cloning into 'git-worktree-mode'...
-remote: Enumerating objects: 19, done.
-remote: Counting objects: 100% (19/19), done.
-remote: Compressing objects: 100% (13/13), done.
-remote: Total 19 (delta 7), reused 17 (delta 5), pack-reused 0
-Receiving objects: 100% (19/19), done.
-Resolving deltas: 100% (7/7), done.
-$ cd git-worktree-mode/
-$ ls
-LICENSE  README.md  git-worktree-mode
-$ echo x >>LICENSE
-$ echo x >>README.md
-$ git add README.md
-$ echo x >>scrap.txt
-$ ls
-LICENSE  README.md  git-worktree-mode  scrap.txt
-$ git status
-On branch master
-Your branch is up to date with 'origin/master'.
+The "co" in "cotree" has a double meaning:
 
-Changes to be committed:
-  (use "git restore --staged <file>..." to unstage)
-        modified:   README.md
+1. It is like the "co" in "coroutine", suggesting
+   multiple concurrent and equal Git work trees.
+2. It also stands for "check out", because the
+   `git-cotree` command largely takes the place
+   of `git checkout` in this workflow.
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-        modified:   LICENSE
+Basically, `git-cotree` provides a great developer
+experience if you want to use or try using two or
+more work trees at the same time.
 
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        scrap.txt
+**Warning!** `git-cotree` currently assumes you
+start with the "normal" setup: you have one work
+tree which contains your `.git` directory. If
+you don't know what this means you're probably
+fine, but if you know you did something like
+`git clone` with the `--bare` option, `git init`
+with the `--separate-git-dir` option, or `git
+worktree add`, then before running `git-cotree`,
+make sure you understand what `git-cotree` does
+before running it.
 
-$ ./git-worktree-mode
-$ git status
-fatal: this operation must be run in a work tree
-$ ls
-master
-$ cd master
-$ ls
-LICENSE  README.md  git-worktree-mode  scrap.txt
-$ git status
-On branch master
-Your branch is up to date with 'origin/master'.
+Run `git-cotree --initialize` (`--initialize` can
+be abbreviated to `--init` or `-i`) inside an
+existing repo to get started.
 
-Changes to be committed:
-  (use "git restore --staged <file>..." to unstage)
-        modified:   README.md
+1. Your repository will be rearranged and
+   set up for the co-tree workflow.
+2. The changes are entirely local. Your next push
+   won't change anything for your teammates,
+   unless you somehow defeat Git in weird ways.
+3. All your staged changes, unstaged changes, and
+   untracked files will all be preserved.
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-        modified:   LICENSE
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        scrap.txt
-
-```
+If you like to explore on your own, take a look at
+the `git-cotree --help` output, and play around.
+I think it is pretty easy and intuitive. For the
+rest of you, I'll write some examples when I can.
