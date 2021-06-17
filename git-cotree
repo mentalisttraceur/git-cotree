@@ -95,7 +95,8 @@ Options:
     -d --delete             Delete a co-tree. This tries deleting
                             both the worktree and the branch.
     -f --force              Force deleting the co-tree branch,
-                            even if there are unmerged changes.'
+                            even if there are unmerged changes.' \
+    || exit 1
 }
 
 action=create
