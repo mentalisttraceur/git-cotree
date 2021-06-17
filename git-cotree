@@ -40,15 +40,48 @@ initialize()
 
 create()
 {
-    directory=$1 || exit 1
-    branch=${2-"$1"} || exit 1
-    git worktree add "$directory" "$branch" || exit 1
+    directory=${1?'fatal: no directory argument'} || exit 1
+    directory=${directory%/} || exit 1
+    root=`git rev-parse --git-common-dir`/.. || exit 1
+    root=`cd "$root" && pwd` || exit 1
+    case $# in 1)
+        exec 3>&1
+        unused=`git worktree add "$root/$directory" "$directory" 2>&1 1>&3` \
+        || git worktree add "$root/$directory" -b "$directory" \
+        || exit 1
+        exit 0
+    esac
+    git worktree add "$root/$directory" -b "$directory" "$2" || exit 1
 }
 
 delete()
 {
-    directory=$1 || exit 1
-    force=$2 || exit 1
-    git worktree remove "$force" "$directory" || exit 1
-    git branch --delete "$force" "$directory" || exit 1
+    directory=${1?'fatal: no directory argument'} || exit 1
+    directory=${directory%/} || exit 1
+    root=`git rev-parse --git-common-dir`/.. || exit 1
+    root=`cd "$root" && pwd` || exit 1
+    git worktree remove $force "$root/$directory" || exit 1
+    if git show-ref --verify --quiet refs/heads/"$directory"
+    then
+        git branch --delete $force "$directory" || exit 1
+    fi
+    while :
+    do
+        case $directory in */*)
+            directory=${directory%/*} || exit 1
+            rmdir "$root/$directory" || exit 0
+            continue
+        esac
+        break
+    done
 }
+
+for argument
+do
+    case $argument in
+    -i | --init | --initialize) shift 1 && initialize "$@"; exit $?;;
+    -d | --delete) shift 1 && delete "$@"; exit $?;;
+    -f | --force) shift 1 && force=--force || exit 1;;
+    *) create "$@"; exit $?;;
+    esac
+done
