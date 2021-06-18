@@ -40,7 +40,7 @@ initialize()
 
 create()
 {
-    directory=${1?'fatal: no directory argument'} || exit 1
+    directory=${1?'fatal: need directory'} || exit 1
     directory=${directory%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
@@ -56,7 +56,7 @@ create()
 
 delete()
 {
-    directory=${1?'fatal: no directory argument'} || exit 1
+    directory=${1?'fatal: need directory'} || exit 1
     directory=${directory%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
