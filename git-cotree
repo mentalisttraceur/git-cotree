@@ -42,8 +42,8 @@ initialize()
 
 create()
 {
-    directory=${1?'need directory'} || exit 1
-    directory=${directory%/} || exit 1
+    case $# in 0) error_need_directory; exit 1; esac
+    directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
     case $# in 1)
@@ -58,8 +58,8 @@ create()
 
 delete()
 {
-    directory=${1?'need directory'} || exit 1
-    directory=${directory%/} || exit 1
+    case $# in 0) error_need_directory; exit 1; esac
+    directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
     git worktree remove $force "$root/$directory" || exit 1
@@ -76,6 +76,11 @@ delete()
         esac
         break
     done
+}
+
+error_need_directory()
+{
+    printf '%s\n' "$arg0: need directory" 1>&2
 }
 
 bad_option()
