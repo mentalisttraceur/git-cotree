@@ -23,6 +23,7 @@ initialize()
     git rm -r --force --quiet --ignore-unmatch . || exit 1
     git config --local core.bare true || exit 1
     git worktree add --quiet "$branch" "$branch" || exit 1
+    git worktree lock --reason 'co-tree base branch' "$branch" || exit 1
     cd "$branch" || exit 1
     case $had_staged_changes in true)
         git reset --quiet HEAD~1 || exit 1
