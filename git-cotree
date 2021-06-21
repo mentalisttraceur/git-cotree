@@ -8,6 +8,7 @@ initialize()
 {
     unused=`git log -n1` || exit 1
     branch=`git branch --show-current` || exit 1
+    case $branch in '') error_not_on_branch; exit 1; esac
     root=`git rev-parse --show-toplevel` || exit 1
     cd "$root" || exit 1
     git diff --staged --quiet
@@ -77,6 +78,11 @@ delete()
         esac
         break
     done
+}
+
+error_not_on_branch()
+{
+    printf '%s\n' "$arg0: must be on a branch" 1>&2
 }
 
 error_need_directory()
