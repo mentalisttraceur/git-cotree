@@ -80,9 +80,32 @@ delete()
     done
 }
 
+base()
+{
+    case $# in 0) error_need_directory; exit 1; esac
+    directory=${1%/} || exit 1
+    root=`git rev-parse --git-common-dir`/.. || exit 1
+    cd "$root" || exit 1
+    ref=refs/heads/$directory
+    if git show-ref --verify --quiet "$ref"
+    then
+        previous=`git branch --show-current` || exit 1
+        git worktree lock --reason 'co-tree base branch' "$directory" || exit 1
+        printf '%s\n' "ref: $ref" >.git/HEAD || exit 1
+        git worktree unlock "$previous" || exit 1
+        exit 0
+    fi
+    error_not_a_branch "$directory"; exit 1
+}
+
 error_not_on_branch()
 {
     printf '%s\n' "$arg0: must be on a branch" 1>&2
+}
+
+error_not_a_branch()
+{
+    printf '%s\n' "$arg0: not a branch: $1" 1>&2
 }
 
 error_need_directory()
@@ -102,6 +125,7 @@ help()
     git-cotree <directory> [<commit-ish>]
     git-cotree --delete [--force] <directory>
     git-cotree --initialize
+    git-cotree --base <directory>
 
 Options:
     -h --help --usage       Show this help text.
@@ -109,7 +133,8 @@ Options:
     -d --delete             Delete a co-tree. This tries deleting
                             both the worktree and the branch.
     -f --force              Force deleting the co-tree branch,
-                            even if there are unmerged changes.' \
+                            even if there are unmerged changes.
+    -b --base               Change the co-tree base branch.' \
     || exit 1
 }
 
@@ -120,6 +145,7 @@ do
     case $argument in
     -h | --help | --usage) help; exit $?;;
     -i | --init | --initialize) action=initialize || exit 1;;
+    -b | --base) action=base || exit 1;;
     -d | --delete) action=delete || exit 1;;
     -f | --force) force=--force || exit 1;;
     -fd | -df) force=--force && action=delete || exit 1;;
