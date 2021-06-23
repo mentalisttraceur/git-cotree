@@ -134,6 +134,7 @@ Options:
                             both the worktree and the branch.
     -f --force              Force deleting the co-tree branch,
                             even if there are unmerged changes.
+    -D                      Short for both --delete and --force.
     -b --base               Change the co-tree base branch.' \
     || exit 1
 }
@@ -148,7 +149,7 @@ do
     -b | --base) action=base || exit 1;;
     -d | --delete) action=delete || exit 1;;
     -f | --force) force=--force || exit 1;;
-    -fd | -df) force=--force && action=delete || exit 1;;
+    -fd | -df | -D) force=--force && action=delete || exit 1;;
     -*) bad_option "$1"; exit 1;;
     *) break;;
     esac
