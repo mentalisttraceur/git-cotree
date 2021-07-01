@@ -42,7 +42,7 @@ initialize()
 
 create()
 {
-    case $# in 0) error_need_directory; exit 1; esac
+    case $# in 0) error_need_co_tree; exit 1; esac
     directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
@@ -58,7 +58,7 @@ create()
 
 delete()
 {
-    case $# in 0) error_need_directory; exit 1; esac
+    case $# in 0) error_need_co_tree; exit 1; esac
     directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
@@ -80,7 +80,7 @@ delete()
 
 base()
 {
-    case $# in 0) error_need_directory; exit 1; esac
+    case $# in 0) error_need_co_tree; exit 1; esac
     directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     cd "$root" || exit 1
@@ -106,9 +106,9 @@ error_not_a_branch()
     printf '%s\n' "not a branch: $1" 1>&2
 }
 
-error_need_directory()
+error_need_co_tree()
 {
-    printf '%s\n' "need directory argument" 1>&2
+    printf '%s\n' "need co-tree argument" 1>&2
 }
 
 bad_option()
@@ -120,10 +120,10 @@ help()
 {
     printf '%s' \
 'Usage:
-    git-cotree <directory> [<commit-ish>]
-    git-cotree --delete [--force] <directory>
+    git-cotree <co-tree-name> [<commit-ish>]
+    git-cotree --delete [--force] <co-tree-name>
     git-cotree --initialize
-    git-cotree --base <directory>
+    git-cotree --base <co-tree-name>
 
 Options:
     -h --help --usage       show this help text
