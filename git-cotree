@@ -120,10 +120,10 @@ help()
 {
     printf '%s' \
 'Usage:
-    git-cotree <co-tree-name> [<commit-ish>]
-    git-cotree --delete [--force] <co-tree-name>
+    git-cotree <co-tree> [<commit-ish>]
+    git-cotree --delete [--force] <co-tree>
     git-cotree --initialize
-    git-cotree --base <co-tree-name>
+    git-cotree --base <branch-co-tree>
 
 Options:
     -h --help --usage       show this help text
@@ -131,7 +131,7 @@ Options:
     -d --delete             delete this co-tree
     -f --force              force deleting this co-tree
     -D                      short for both --delete and --force
-    -b --base               make this co-tree the base co-tree
+    -b --base               use this co-tree as the base branch
 ' || exit 1
 }
 
