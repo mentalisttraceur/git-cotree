@@ -129,11 +129,9 @@ help()
 
 Options:
     -h --help --usage       Show this help text.
-    -i --init --initialize  Set up the repository for co-trees.
-    -d --delete             Delete a co-tree. This tries deleting
-                            both the worktree and the branch.
-    -f --force              Force deleting the co-tree branch,
-                            even if there are unmerged changes.
+    -i --init --initialize  Set up for using co-trees.
+    -d --delete             Delete a co-tree worktree and branch.
+    -f --force              Force deleting the co-tree.
     -D                      Short for both --delete and --force.
     -b --base               Change the co-tree base branch.' \
     || exit 1
