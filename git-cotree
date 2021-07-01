@@ -123,7 +123,7 @@ help()
     git-cotree <co-tree> [<commit-ish>]
     git-cotree --delete [--force] <co-tree>
     git-cotree --initialize
-    git-cotree --base <branch-co-tree>
+    git-cotree --base <co-tree>
 
 Options:
     -h --help --usage       show this help text
