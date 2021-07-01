@@ -108,7 +108,7 @@ error_not_a_branch()
 
 error_need_directory()
 {
-    printf '%s\n' "need directory" 1>&2
+    printf '%s\n' "need directory argument" 1>&2
 }
 
 bad_option()
