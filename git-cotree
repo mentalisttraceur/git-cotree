@@ -118,7 +118,7 @@ bad_option()
 
 help()
 {
-    printf '%s\n' \
+    printf '%s' \
 'Usage:
     git-cotree <directory> [<commit-ish>]
     git-cotree --delete [--force] <directory>
@@ -131,8 +131,8 @@ Options:
     -d --delete             delete a co-tree worktree and branch
     -f --force              force deleting the co-tree
     -D                      short for both --delete and --force
-    -b --base               change the co-tree base branch' \
-    || exit 1
+    -b --base               change the co-tree base branch
+' || exit 1
 }
 
 force=
