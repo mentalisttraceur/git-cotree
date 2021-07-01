@@ -128,12 +128,12 @@ help()
     git-cotree --base <directory>
 
 Options:
-    -h --help --usage       Show this help text.
-    -i --init --initialize  Set up for using co-trees.
-    -d --delete             Delete a co-tree worktree and branch.
-    -f --force              Force deleting the co-tree.
-    -D                      Short for both --delete and --force.
-    -b --base               Change the co-tree base branch.' \
+    -h --help --usage       show this help text
+    -i --init --initialize  set up for using co-trees
+    -d --delete             delete a co-tree worktree and branch
+    -f --force              force deleting the co-tree
+    -D                      short for both --delete and --force
+    -b --base               change the co-tree base branch' \
     || exit 1
 }
 
