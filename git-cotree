@@ -118,7 +118,7 @@ bad_option()
 
 help()
 {
-    echo \
+    printf '%s\n' \
 'Usage:
     git-cotree <directory> [<commit-ish>]
     git-cotree --delete [--force] <directory>
