@@ -128,10 +128,10 @@ help()
 Options:
     -h --help --usage       show this help text
     -i --init --initialize  set up for using co-trees
-    -d --delete             delete a co-tree worktree and branch
-    -f --force              force deleting the co-tree
+    -d --delete             delete this co-tree
+    -f --force              force deleting this co-tree
     -D                      short for both --delete and --force
-    -b --base               change the co-tree base branch
+    -b --base               make this co-tree the base co-tree
 ' || exit 1
 }
 
