@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: 0BSD
 # Copyright 2021 Alexander Kozhevnikov <mentalisttraceur@gmail.com>
 
-arg0=$0
-
 initialize()
 {
     unused=`git log -n1` || exit 1
@@ -100,22 +98,22 @@ base()
 
 error_not_on_branch()
 {
-    printf '%s\n' "$arg0: must be on a branch" 1>&2
+    printf '%s\n' "must be on a branch" 1>&2
 }
 
 error_not_a_branch()
 {
-    printf '%s\n' "$arg0: not a branch: $1" 1>&2
+    printf '%s\n' "not a branch: $1" 1>&2
 }
 
 error_need_directory()
 {
-    printf '%s\n' "$arg0: need directory" 1>&2
+    printf '%s\n' "need directory" 1>&2
 }
 
 bad_option()
 {
-    printf '%s\n' "$arg0: bad option: $1" 1>&2
+    printf '%s\n' "bad option: $1" 1>&2
 }
 
 help()
