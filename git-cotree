@@ -98,7 +98,7 @@ base()
 
 error_not_on_branch()
 {
-    printf '%s\n' "must be on a branch" 1>&2
+    printf '%s\n' 'must be on a branch' 1>&2
 }
 
 error_not_a_branch()
@@ -108,7 +108,7 @@ error_not_a_branch()
 
 error_need_co_tree()
 {
-    printf '%s\n' "need co-tree argument" 1>&2
+    printf '%s\n' 'need co-tree argument' 1>&2
 }
 
 bad_option()
