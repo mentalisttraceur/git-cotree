@@ -9,6 +9,9 @@ initialize()
     case $branch in '') error_not_on_branch; exit 1; esac
     root=`git rev-parse --show-toplevel` || exit 1
     cd "$root" || exit 1
+    case `git rev-parse --git-common-dir` in .git) :;; *)
+        error_missing_git_directory; exit 1
+    esac
     git diff --staged --quiet
     case $? in 1)
         had_staged_changes=true || exit 1
@@ -99,6 +102,11 @@ base()
 error_not_on_branch()
 {
     printf '%s\n' 'must be on a branch' 1>&2
+}
+
+error_missing_git_directory()
+{
+    printf '%s\n' 'missing .git directory' 1>&2
 }
 
 error_not_a_branch()
