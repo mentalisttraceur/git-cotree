@@ -20,7 +20,7 @@ initialize()
     git diff --quiet
     case $? in 1)
         had_unstaged_changes=true || exit 1
-        git stash --quiet || exit 1
+        git stash --all --quiet || exit 1
     esac
     git rm -r --force --quiet --ignore-unmatch . || exit 1
     git config --local core.bare true || exit 1
@@ -34,13 +34,6 @@ initialize()
     case $had_unstaged_changes in true)
         git stash pop --quiet || exit 1
     esac
-    cd "$root" || exit 1
-    for untracked_file in * .*
-    do
-        case $untracked_file in "$branch" | .. | . | .git) :;; *)
-            mv ./"$untracked_file" "$branch"/ || exit 1
-        esac
-    done
 }
 
 create()
