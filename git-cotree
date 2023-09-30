@@ -24,9 +24,9 @@ initialize()
     esac
     git rm -r --force --quiet --ignore-unmatch . || exit 1
     git config --local core.bare true || exit 1
-    git worktree add --quiet "$branch" "$branch" || exit 1
-    git worktree lock --reason 'co-tree base branch' "$branch" || exit 1
-    cd "$branch" || exit 1
+    directory=`mktemp -d git-cotree-XXXXXX` || exit 1
+    git worktree add --quiet "$directory" "$branch" || exit 1
+    cd "$directory" || exit 1
     case $had_staged_changes in true)
         git reset --quiet HEAD~1 || exit 1
         git add --all || exit 1
@@ -34,6 +34,9 @@ initialize()
     case $had_unstaged_changes in true)
         git stash pop --quiet || exit 1
     esac
+    cd "$root" || exit 1
+    git worktree move "$directory" "$branch" || exit 1
+    git worktree lock --reason 'co-tree base branch' "$branch" || exit 1
 }
 
 create()
