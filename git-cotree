@@ -35,6 +35,9 @@ initialize()
         git stash pop --quiet || exit 1
     esac
     cd "$root" || exit 1
+    case $branch in ?*/*)
+        mkdir -p "${branch%/*}" || exit 1
+    esac
     git worktree move "$directory" "$branch" || exit 1
     git worktree lock --reason 'co-tree base branch' "$branch" || exit 1
 }
