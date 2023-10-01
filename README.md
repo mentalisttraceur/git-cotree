@@ -142,3 +142,55 @@ with the `--separate-git-dir` option.
 # This documentation is unfinished.
 
 I'll write the rest when I can.
+
+
+### Checkout into new worktree
+
+```
+git-cotree <co-tree> [<commit-ish>]
+```
+
+```sh
+$ git-cotree docs
+Preparing worktree (new branch 'docs')
+HEAD is now at ...
+$ git branch
+* docs
++ main
+$ ls ..
+docs main
+$ ls ../docs
+LICENSE  README.md  git-cotree
+$ cd ../docs
+$ git status 
+On branch docs
+nothing to commit, working tree clean
+```
+
+```
+$ cd ../main
+$ git stash
+$ cd ../docs
+$ git stash pop
+```
+
+
+###
+    git-cotree --delete [--force] <co-tree>
+    
+
+### Setting the default to branch from
+ 
+<!--
+If you're in a worktree, new branches work
+as normal - they start from the commit you
+are currently on.
+
+But if you're not in a worktree (you are in
+the main repo directory which contains all
+of the work trees) what branch should you
+-->
+
+```
+git-cotree --base <co-tree>
+```
