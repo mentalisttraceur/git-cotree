@@ -1,49 +1,144 @@
 # Git Co-Tree
 
-`git-cotree` implements an ergonomic approach to
-using multiple Git work trees which I am calling
-"co-trees".
+`git-cotree` makes using multiple Git work
+trees for one repo really smooth and clean.
 
-Concretely, `git-cotree` is a minimalistic,
-opinionated, and ergonomic wrapper/"porcelain"
-around the core functionality of `git worktree`,
-`git branch`, and `git checkout`.
+* `git-cotree` automates all of the repetition
+  and boilerplate that normally has to go with
+  `git worktree`.
+* `git-cotree` matches the behavior of typical
+  `git` commands better than `git worktree` does.
+* `git-cotree` helps keep worktrees organized
+  in the most natural and obvious way, all while
+  not "spilling out" of your cloned repo folder.
+* `git-cotree` makes it seamless to switch from
+  a normal single-worktree clone to `git-cotree`.
 
-The "co" in "cotree" has a double meaning:
+`git-cotree` is the user experience `git
+worktree` should've had from the beginning.
 
-1. It is like the "co" in "coroutine", suggesting
-   multiple concurrent and equal Git work trees.
-2. It also stands for "check out", because the
-   `git-cotree` command largely takes the place
-   of `git checkout` in this workflow.
+Why "co"-tree?
 
-Basically, `git-cotree` provides a great developer
-experience if you want to use or try using two or
-more work trees at the same time.
+1. Like the "co" in "coroutine", suggesting
+   multiple concurrent Git work trees.
+2. "C.O." for "check out": `git cotree <branch>`
+   checks out `<branch>` into its own work tree.
 
-**Warning!** `git-cotree` currently assumes you
-start with the "normal" setup: you have one work
-tree which contains your `.git` directory. If
-you don't know what this means you're probably
-fine, but if you know you did something like
-`git clone` with the `--bare` option, `git init`
-with the `--separate-git-dir` option, or `git
-worktree add`, then make sure you understand
-what `git-cotree` does before running it.
 
-Run `git-cotree --initialize` (can be
-shortened to `--init` or `-i`) inside
-an existing repo to get started.
+## Installation
 
-1. Your repository will be rearranged and
-   set up for the co-tree workflow.
-2. The changes are entirely local. Your next push
-   won't change anything for your teammates,
-   unless you somehow defeat Git in weird ways.
-3. All your staged changes, unstaged changes,
-   and untracked files will be preserved.
+Just copy the `git-cotree` script from this repo.
+It only needs `git` and standard system utilities.
 
-If you like to explore on your own, take a look at
-the `git-cotree --help` output, and play around.
-I think it is pretty easy and intuitive. For the
-rest of you, I'll write some examples when I can.
+Note: once `git-cotree` is in your PATH, it can
+also be invoked as `git cotree` (without the `-`).
+
+
+## Usage
+
+Let's say you've cloned this repo:
+
+```sh
+$ git clone https://github.com/mentalisttraceur/git-cotree
+...
+$ cd git-cotree
+$ git branch
+* main
+$ ls
+LICENSE  README.md  git-cotree
+```
+
+### First setup (once per cloned repo)
+
+Run `git cotree --init` to convert your repo to the
+Git Co-Tree layout (don't worry: this is just a local
+change, it won't have any affect on the remote):
+
+```sh
+$ git cotree --init
+$ ls
+main
+$ ls main
+LICENSE  README.md  git-cotree
+```
+
+<details><summary>
+
+`git cotree --init` will even preserve any changes you
+haven't yet committed! [click to see detailed example]
+
+</summary>
+
+```sh
+$ git clone https://github.com/mentalisttraceur/git-cotree
+...
+$ cd git-cotree
+$ ls
+LICENSE  README.md  git-cotree
+$ echo "Example change" >>README.md
+$ git add README.md
+$ echo "Example change 2" >>README.md
+$ echo "Mine now" >LICENSE
+$ touch xyz
+$ printf 'xyz\n' >.gitignore
+$ mkdir empty-directory
+$ ls
+LICENSE  README.md  empty-directory  git-cotree  xyz
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   README.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   LICENSE
+        modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+
+$ git cotree --init
+$ ls
+main
+$ cd main
+$ ls
+LICENSE  README.md  empty-directory  git-cotree  xyz
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   README.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   LICENSE
+        modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+
+```
+
+Staged changes, unstaged changes, untracked and ignored
+files and directories, all there after the conversion!
+
+</details>
+
+**Warning!** `git-cotree` assumes you started with
+a "normal" setup - it won't work if you did something
+like `git clone` with the `--bare` option or `git init`
+with the `--separate-git-dir` option.
+
+
+# This documentation is unfinished.
+
+I'll write the rest when I can.
