@@ -42,7 +42,13 @@ it can also be invoked as `git cotree`.
 
 ## Usage
 
-Let's say you've cloned this repo:
+### First setup (once for each repo)
+
+Run `git cotree --init` to convert your repo to the
+Git Co-Tree layout (don't worry: this is just a local
+change, it won't have any affect on the remote).
+
+For example, in a clone of this repo:
 
 ```sh
 $ git clone https://github.com/mentalisttraceur/git-cotree
@@ -52,15 +58,6 @@ $ git branch
 * main
 $ ls
 LICENSE  README.md  git-cotree
-```
-
-### First setup (once for each repo)
-
-Run `git cotree --init` to convert your repo to the
-Git Co-Tree layout (don't worry: this is just a local
-change, it won't have any affect on the remote):
-
-```sh
 $ git cotree --init
 $ ls
 main
