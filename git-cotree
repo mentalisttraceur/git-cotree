@@ -20,7 +20,7 @@ initialize()
     git diff --quiet
     case $? in 1)
         had_unstaged_changes=true
-        git stash --all --quiet || exit 1
+        git stash --quiet || exit 1
     esac
     git rm -r --force --quiet --ignore-unmatch . || exit 1
     git config --local core.bare true || exit 1
@@ -35,11 +35,39 @@ initialize()
         git stash pop --quiet || exit 1
     esac
     cd "$root" || exit 1
+    for name in * .*
+    do
+        case $name in "$directory" | .. | . | .git) :;; *)
+            _recursive_mv "$name" "$directory" || exit 1
+        esac
+    done
     case $branch in ?*/*)
         mkdir -p "${branch%/*}" || exit 1
     esac
     git worktree move "$directory" "$branch" || exit 1
     git worktree lock --reason 'co-tree base branch' "$branch" || exit 1
+}
+
+_recursive_mv()
+{
+    if test -d ./"$1" && test -d ./"$2/$1"
+    then
+        for path in "$1"/* "$1"/.*
+        do
+            case $path in "$1"/.. | "$1"/.) :;; *)
+                case $path in "$1/*")
+                    if test ! -e ./"$1/*"
+                    then
+                        continue
+                    fi
+                esac
+                _recursive_mv "$path" "$2" || return 1
+            esac
+        done
+        rmdir ./"$1" || return 1
+    else
+        mv ./"$1" ./"$2/$1" || return 1
+    fi
 }
 
 create()
