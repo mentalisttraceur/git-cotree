@@ -21,7 +21,7 @@ checked out into its own working directory (aka
 * `git-cotree` makes it seamless to switch a repo
   that you're already using normally to co-trees.
 
-In other words, it's `git worktree` for humans.
+In other words: `git-cotree` is `git worktree` for humans.
 
 
 ## Why is it called "co"-tree?
@@ -36,7 +36,7 @@ repo, **c**hecked **o**ut **co**ncurrently.
 Just copy the `git-cotree` script from this repo.
 It only needs `git` and standard system utilities.
 
-Note: once `git-cotree` is in your PATH,
+**Tip:** once `git-cotree` is in your PATH,
 it can also be invoked as `git cotree`.
 
 
