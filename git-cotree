@@ -17,6 +17,12 @@ initialize()
         had_staged_changes=true
         git commit --quiet --message 'git-cotree temporary commit' || exit 1
     esac
+    git diff --quiet
+    case $? in 1)
+        had_unstaged_changes=true
+        git add --update --ignore-removal . || exit 1
+        git stash --staged --quiet || exit 1
+    esac
     git rm -r --force --quiet --ignore-unmatch . || exit 1
     git config --local core.bare true || exit 1
     directory=`mktemp -d git-cotree-XXXXXX` || exit 1
@@ -25,6 +31,9 @@ initialize()
     case $had_staged_changes in true)
         git reset --quiet HEAD~1 || exit 1
         git add --all || exit 1
+    esac
+    case $had_unstaged_changes in true)
+        git stash pop --quiet || exit 1
     esac
     cd "$root" || exit 1
     for name in * .*
