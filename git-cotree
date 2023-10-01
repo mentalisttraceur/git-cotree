@@ -14,12 +14,12 @@ initialize()
     esac
     git diff --staged --quiet
     case $? in 1)
-        had_staged_changes=true || exit 1
+        had_staged_changes=true
         git commit --quiet --message 'git-cotree temporary commit' || exit 1
     esac
     git diff --quiet
     case $? in 1)
-        had_unstaged_changes=true || exit 1
+        had_unstaged_changes=true
         git stash --all --quiet || exit 1
     esac
     git rm -r --force --quiet --ignore-unmatch . || exit 1
