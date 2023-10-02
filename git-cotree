@@ -148,11 +148,11 @@ for argument
 do
     case $argument in
     -h | --help | --usage) help; exit $?;;
-    -i | --init | --initialize) action=initialize || exit 1;;
-    -b | --base) action=base || exit 1;;
-    -d | --delete) action=delete || exit 1;;
-    -f | --force) force=--force || exit 1;;
-    -fd | -df | -D) force=--force && action=delete || exit 1;;
+    -i | --init | --initialize) action=initialize;;
+    -b | --base) action=base;;
+    -d | --delete) action=delete;;
+    -f | --force) force=--force;;
+    -fd | -df | -D) force=--force && action=delete;;
     -*) bad_option "$1"; exit 1;;
     *) break;;
     esac
