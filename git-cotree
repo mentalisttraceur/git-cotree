@@ -36,7 +36,6 @@ initialize()
         mkdir -p "${branch%/*}" || exit 1
     esac
     git worktree move "$directory" "$branch" || exit 1
-    git worktree lock --reason 'co-tree base branch' "$branch" || exit 1
 }
 
 create()
@@ -95,16 +94,7 @@ base()
     ref=refs/heads/$directory
     if git show-ref --verify --quiet "$ref"
     then
-        previous=`git branch --show-current` || exit 1
-        git worktree lock --reason 'co-tree base branch' "$directory" || exit 1
         printf '%s\n' "ref: $ref" >.git/HEAD || exit 1
-        if test x"$previous" != x"$directory"
-        then
-            if `git -C "$previous" rev-parse --is-inside-work-tree 2>/dev/null`
-            then
-                git worktree unlock "$previous" || exit 1
-            fi
-        fi
         exit 0
     fi
     error_not_a_branch "$directory"; exit 1
