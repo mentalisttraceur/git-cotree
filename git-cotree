@@ -45,6 +45,10 @@ create()
     directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
+    case $directory in ../*)
+        cd .. || exit 1
+        directory=${directory#../}
+    esac
     case $# in 1)
         exec 3>&1
         unused=`git worktree add "$root/$directory" "$directory" 2>&1 1>&3` \
@@ -61,6 +65,10 @@ delete()
     directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
+    case $directory in ../*)
+        cd .. || exit 1
+        directory=${directory#../}
+    esac
     git worktree remove $force "$root/$directory" || exit 1
     if git show-ref --verify --quiet refs/heads/"$directory"
     then
