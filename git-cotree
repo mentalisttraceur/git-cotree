@@ -69,11 +69,11 @@ delete()
         cd .. || exit 1
         directory=${directory#../}
     esac
+    branch=`cd "$root/$directory" 2>/dev/null && git branch --show-current`
     git worktree remove $force "$root/$directory" || exit 1
-    if git show-ref --verify --quiet refs/heads/"$directory"
-    then
-        git branch --delete $force "$directory" || exit 1
-    fi
+    case $branch in ?*)
+        git branch --delete $force "$branch" || exit 1
+    esac
     while :
     do
         case $directory in */*)
