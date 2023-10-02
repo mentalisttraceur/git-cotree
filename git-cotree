@@ -99,7 +99,10 @@ base()
         printf '%s\n' "ref: $ref" >.git/HEAD || exit 1
         if test x"$previous" != x"$directory"
         then
-            git worktree unlock "$previous" || exit 1
+            if `git -C "$previous" rev-parse --is-inside-work-tree 2>/dev/null`
+            then
+                git worktree unlock "$previous" || exit 1
+            fi
         fi
         exit 0
     fi
