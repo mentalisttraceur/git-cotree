@@ -65,13 +65,14 @@ delete()
     directory=${1%/} || exit 1
     root=`git rev-parse --git-common-dir`/.. || exit 1
     root=`cd "$root" && pwd` || exit 1
+    base=`git -C "$root" branch --show-current` || exit 1
     case $directory in ../*)
         cd .. || exit 1
         directory=${directory#../}
     esac
     branch=`cd "$root/$directory" 2>/dev/null && git branch --show-current`
     git worktree remove $force "$root/$directory" || exit 1
-    case $branch in ?*)
+    case $branch in "$base") :;; ?*)
         git branch --delete $force "$branch" || exit 1
     esac
     while :
