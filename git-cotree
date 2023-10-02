@@ -87,7 +87,7 @@ base()
     ref=refs/heads/$directory
     if git show-ref --verify --quiet "$ref"
     then
-        printf '%s\n' "ref: $ref" >.git/HEAD || exit 1
+        git symbolic-ref HEAD "$ref" || exit 1
         exit 0
     fi
     error_not_a_branch "$directory"; exit 1
