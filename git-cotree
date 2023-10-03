@@ -90,7 +90,7 @@ delete()
 
 _directory_is_empty()
 {
-    cd "$directory" || return 1
+    cd "$1" || return 1
     for file in *
     do
         case $file in '*') :;; *) return 1; esac
