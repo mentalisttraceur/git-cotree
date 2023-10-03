@@ -70,12 +70,41 @@ delete()
     do
         case $directory in */*)
             directory=${directory%/*} || exit 1
-            rmdir "$root/$directory" || exit 0
-            continue
+            current=`pwd` || exit 1
+            case "$root/$directory" in "$current"/?*)
+                if error=`rmdir "$root/$directory" 2>&1`
+                then
+                    continue
+                else
+                    if _directory_is_empty "$root/$directory"
+                    then
+                        printf '%s\n' "$error" 1>&2; exit 1
+                    fi
+                    exit 0
+                fi
+            esac
         esac
         break
     done
 }
+
+_directory_is_empty()
+(
+    cd "$directory" || exit 1
+    for file in *
+    do
+        case $file in '*') :;; *) exit 1; esac
+    done
+    for file in ?
+    do
+        case $file in '?') :;; *) exit 1; esac
+    done
+    for file in .*
+    do
+        case $file in . | ..) :;; *) exit 1; esac
+    done
+    exit 0
+)
 
 base()
 {
