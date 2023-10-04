@@ -137,7 +137,7 @@ _resolve_directory()
         esac
         break
     done
-    worktree=`git -C "$previous" rev-parse --is-inside-work-tree` || return 1
+    worktree=`git rev-parse --is-inside-work-tree` || return 1
     case $worktree in false)
         current=`pwd` || return 1
         case $current in "$1"/?*)
