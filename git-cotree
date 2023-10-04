@@ -67,6 +67,10 @@ delete()
     case $branch in "$base") :;; ?*)
         git branch --delete $force "$branch" || return 1
     esac
+    current=`pwd` || return 1
+    case "$root/$directory" in "$current"/?*) :;; *)
+        cd "$root" || return 1
+    esac
     while :
     do
         case $directory in */*)
