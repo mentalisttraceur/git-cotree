@@ -138,21 +138,22 @@ _resolve_directory()
         esac
         break
     done
-    directory=${directory%/}
-    case $directory in ../* | ./*)
+    case $directory in ../* | ./* | .. | .)
         while :
         do
             case $directory in
-            ../*)
+            ../* | ..)
                 current=`pwd` || return 1
                 case $current in "$1"/?*)
                     cd .. || return 1
-                    directory=${directory#../}
+                    directory=${directory#..}
+                    directory=${directory#/}
                     continue
                 esac
             ;;
-            ./*)
-                directory=${directory#./}
+            ./* | .)
+                directory=${directory#.}
+                directory=${directory#/}
                 continue
             esac
             break
@@ -162,6 +163,7 @@ _resolve_directory()
             directory=${current#"$1"/}/$directory
         esac
     esac
+    directory=${directory%/}
     printf '%s\n' "$directory"
 }
 
