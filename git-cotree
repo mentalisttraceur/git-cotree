@@ -124,7 +124,16 @@ base()
 
 _resolve_directory()
 {
-    directory=${2%/} || return 1
+    directory=$2
+    while :
+    do
+        case $directory in *//*)
+            directory=${directory%%//*}/${directory#*//}
+            continue
+        esac
+        break
+    done
+    directory=${directory%/}
     while :
     do
         case $directory in ../*)
