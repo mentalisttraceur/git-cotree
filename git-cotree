@@ -139,20 +139,24 @@ _resolve_directory()
         break
     done
     directory=${directory%/}
-    while :
-    do
-        case $directory in ../*)
-            current=`pwd` || return 1
-            case $current in "$1"/?*)
-                cd .. || return 1
-                directory=${directory#../}
+    case $directory in ../* | ./*)
+        while :
+        do
+            case $directory in
+            ../*)
+                current=`pwd` || return 1
+                case $current in "$1"/?*)
+                    cd .. || return 1
+                    directory=${directory#../}
+                    continue
+                esac
+            ;;
+            ./*)
+                directory=${directory#./}
                 continue
             esac
-        esac
-        break
-    done
-    worktree=`git rev-parse --is-inside-work-tree` || return 1
-    case $worktree in false)
+            break
+        done
         current=`pwd` || return 1
         case $current in "$1"/?*)
             directory=${current#"$1"/}/$directory
