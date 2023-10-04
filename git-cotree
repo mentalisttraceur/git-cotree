@@ -70,7 +70,7 @@ delete()
     while :
     do
         case $directory in */*)
-            directory=${directory%/*} || return 1
+            directory=${directory%/*}
             current=`pwd` || return 1
             case "$root/$directory" in "$current"/?*)
                 if error=`rmdir "$root/$directory" 2>&1`
