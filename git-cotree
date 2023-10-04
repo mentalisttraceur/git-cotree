@@ -64,9 +64,6 @@ delete()
     base=`git -C "$root" branch --show-current` || return 1
     branch=`git -C "$root/$directory" branch --show-current 2>/dev/null`
     git worktree remove $force "$root/$directory" || return 1
-    case $branch in "$base") :;; ?*)
-        git branch --delete $force "$branch" || return 1
-    esac
     current=`pwd` || return 1
     case "$root/$directory" in "$current"/?*) :;; *)
         cd "$root" || return 1
@@ -85,12 +82,15 @@ delete()
                     then
                         printf '%s\n' "$error" 1>&2; return 1
                     fi
-                    return 0
+                    break
                 fi
             esac
         esac
         break
     done
+    case $branch in "$base") :;; ?*)
+        git branch --delete $force "$branch" || return 1
+    esac
 }
 
 _directory_is_empty()
