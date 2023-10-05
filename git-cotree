@@ -113,7 +113,7 @@ _directory_is_empty()
 
 base()
 {
-    case $# in 0) error_need_branch_or_co_tree; return 1; esac
+    case $# in 0) error_need_commit_ish_or_co_tree; return 1; esac
     root=`git rev-parse --git-common-dir`/.. || return 1
     root=`cd "$root" && pwd` || return 1
     base=`_resolve_directory "$root" "$1"` || return 1
@@ -124,14 +124,21 @@ base()
         then
             git symbolic-ref HEAD "$ref" || return 1
             return 0
+        elif commit=`git rev-parse --verify --quiet "$base^{commit}"`
+        then
+            git update-ref --no-deref HEAD "$commit" || return 1
+            return 0
         fi
     esac
     branch=`git -C "$root/$base" branch --show-current` || return 1
-    case $branch in ?*)
+    case $branch in
+    ?*)
         git symbolic-ref HEAD "refs/heads/$branch" || return 1
-        return 0
+    ;;
+    '')
+        commit=`git -C "$root/$base" rev-parse HEAD` || return 1
+        git update-ref --no-deref HEAD "$commit" || return 1
     esac
-    error_not_a_branch "$base" || return 1
 }
 
 _resolve_directory()
@@ -184,19 +191,14 @@ error_missing_git_directory()
     printf '%s\n' 'fatal: missing .git directory' 1>&2
 }
 
-error_not_a_branch()
+error_need_commit_ish_or_co_tree()
 {
-    printf '%s\n' "fatal: not a branch: $1" 1>&2
+    printf '%s\n' 'fatal: need commit-ish or co-tree argument' 1>&2
 }
 
 error_need_co_tree()
 {
     printf '%s\n' 'fatal: need co-tree argument' 1>&2
-}
-
-error_need_branch_or_co_tree()
-{
-    printf '%s\n' 'fatal: need branch or co-tree argument' 1>&2
 }
 
 bad_option()
@@ -211,7 +213,7 @@ help()
     git-cotree <co-tree> [<commit-ish>]
     git-cotree --delete [--force] <co-tree>
     git-cotree --initialize
-    git-cotree --base (<branch> | <co-tree>)
+    git-cotree --base (<commit-ish> | <co-tree>)
     git-cotree --collapse <co-tree>
 
 Options:
@@ -220,7 +222,7 @@ Options:
     -d --delete             delete this co-tree
     -f --force              force deleting this co-tree
     -D                      short for both --delete and --force
-    -b --base               set default base branch for new co-tree branches
+    -b --base               set the default base for new co-tree branches
 ' || return 1
 }
 
