@@ -129,14 +129,15 @@ base()
             return 0
         fi
     esac
-    branch=`git -C "$root/$base" branch --show-current` || return 1
+    _cd_within_repository "$root" "$base" || return 1
+    branch=`git branch --show-current` || return 1
     case $branch in
     ?*)
-        git symbolic-ref HEAD "refs/heads/$branch" || return 1
+        git -C "$root" symbolic-ref HEAD "refs/heads/$branch" || return 1
     ;;
     '')
-        commit=`git -C "$root/$base" rev-parse HEAD` || return 1
-        git update-ref --no-deref HEAD "$commit" || return 1
+        commit=`git rev-parse HEAD` || return 1
+        git -C "$root" update-ref --no-deref HEAD "$commit" || return 1
     esac
 }
 
@@ -203,6 +204,16 @@ _resolve_directory()
     printf '%s\n' "$directory"
 }
 
+_cd_within_repository()
+{
+    cd "$1/$2" || return 1
+    after=`pwd` || return 1
+    case $after in "$1" | "$1"/?*)
+        return 0
+    esac
+    error_outside_repository "$1/$2"; return 1
+}
+
 error_not_on_branch()
 {
     printf '%s\n' 'fatal: must be on a branch' 1>&2
@@ -216,6 +227,11 @@ error_missing_git_directory()
 error_need_commit_ish_or_co_tree()
 {
     printf '%s\n' 'fatal: need commit-ish or co-tree argument' 1>&2
+}
+
+error_outside_repository()
+{
+    printf '%s\n' "fatal: outside repository: $1" 1>&2
 }
 
 error_need_co_tree()
