@@ -1,7 +1,14 @@
 # Git Co-Tree
 
-`git-cotree` makes using multiple Git work
-trees for one repo really smooth and clean.
+`git worktree` for humans.
+
+`git-cotree` makes using multiple worktrees
+for one Git repo really smooth and clean.
+
+<details><summary>
+[click to expand a more precise explanation for
+those familiar with <code>git worktree<code>]
+</summary>
 
 * `git-cotree` automates all of the repetition
   and boilerplate that normally has to go with
@@ -10,14 +17,20 @@ trees for one repo really smooth and clean.
   `git` commands better than `git worktree` does.
 * `git-cotree` helps keep worktrees organized
   in the most natural and obvious way, all while
-  not "spilling out" of your cloned repo folder.
+  * not spilling out of your initial repo folder
+    (like normal `git worktree` use does), and
+  * not exposing Git internals (as "bare" repo
+    workflows trying to make multiple worktrees
+    nicer typically end up doing).
 * `git-cotree` makes it seamless to switch from
-  a normal single-worktree clone to `git-cotree`.
+  a normal single-worktree layout to a great
+  layout for multiple worktrees at any time
+  (no need to have set up for it when you first
+  cloned or created the repo).
 
-`git-cotree` is the user experience `git
-worktree` should've had from the beginning.
+</details>
 
-Why "co"-tree?
+Why is it called "co"-tree?
 
 1. Like the "co" in "coroutine", suggesting
    multiple concurrent Git work trees.
@@ -63,10 +76,9 @@ LICENSE  README.md  git-cotree
 ```
 
 <details><summary>
-
-`git cotree --init` will even preserve any changes you
-haven't yet committed! [click to see detailed example]
-
+<code>git cotree --init</code> will even preserve
+any changes you haven't yet committed!
+[click to see detailed example]
 </summary>
 
 ```sh
