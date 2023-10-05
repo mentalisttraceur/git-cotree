@@ -44,7 +44,7 @@ initialize()
 create()
 {
     case $# in 0) error_need_co_tree; return 1; esac
-    root=`_find_cotree_root` || return 1
+    root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     case $# in 1)
         exec 3>&1
@@ -59,7 +59,7 @@ create()
 delete()
 {
     case $# in 0) error_need_co_tree; return 1; esac
-    root=`_find_cotree_root` || return 1
+    root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     base=`git -C "$root" branch --show-current` || return 1
     branch=`
@@ -77,7 +77,7 @@ delete()
 base()
 {
     case $# in 0) error_need_commit_ish_or_co_tree; return 1; esac
-    root=`_find_cotree_root` || return 1
+    root=`find_cotree_root` || return 1
     base=`_resolve_directory "$root" "$1"` || return 1
     cd "$root" || return 1
     case $1 in . | .. | ./* | ../*) :;; *)
@@ -108,7 +108,7 @@ base()
 collapse()
 {
     case $# in 0) error_need_co_tree; return 1; esac
-    root=`_find_cotree_root` || return 1
+    root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     cd "$root/$directory" || return 1
     _in_repository_after_cd "$root" "$directory" || return 1
@@ -146,7 +146,7 @@ collapse()
     git config --local core.bare false || return 1
 }
 
-_find_cotree_root()
+find_cotree_root()
 {
     prefix=`git rev-parse --show-prefix` || return 1
     while :
@@ -166,7 +166,7 @@ _find_cotree_root()
             break
         esac
     done
-    pwd
+    pwd || return 1
 }
 
 _resolve_directory()
@@ -297,6 +297,7 @@ help()
     git-cotree --delete [--force] <co-tree>
     git-cotree --initialize
     git-cotree --base (<commit-ish> | <co-tree>)
+    git-cotree --show-root
     git-cotree --collapse <co-tree>
 
 Options:
@@ -306,6 +307,7 @@ Options:
     -f --force              force deleting this co-tree
     -D                      short for both --delete and --force
     -b --base               set the default base for new co-tree branches
+       --show-root          show absolute path of co-tree repo root
     -c --collapse           collapse this co-tree into the repo root
 ' || return 1
 }
@@ -322,6 +324,7 @@ do
     -d | --delete) action=delete;;
     -f | --force) force=--force;;
     -fd | -df | -D) force=--force && action=delete;;
+    --show-root) action=find_cotree_root;;
     -*) bad_option "$1"; exit 1;;
     *) break;;
     esac
