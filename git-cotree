@@ -218,11 +218,6 @@ _in_repository_after_cd()
     error_outside_repository "$1/$2"; return 1
 }
 
-error_not_on_branch()
-{
-    printf '%s\n' 'fatal: must be on a branch' 1>&2
-}
-
 error_missing_git_directory()
 {
     printf '%s\n' 'fatal: missing .git directory' 1>&2
