@@ -62,7 +62,11 @@ delete()
     root=`_find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     base=`git -C "$root" branch --show-current` || return 1
-    branch=`git -C "$root/$directory" branch --show-current 2>/dev/null`
+    branch=`
+        cd "$root/$directory" 2>/dev/null || exit 0
+        _in_repository_after_cd "$root" "$directory" || exit 1
+        git branch --show-current 2>/dev/null || exit 0
+    ` || return 1
     git worktree remove $force "$root/$directory" || return 1
     current=`pwd` || return 1
     case "$root/$directory" in "$current"/?*) :;; *)
@@ -129,7 +133,8 @@ base()
             return 0
         fi
     esac
-    _cd_within_repository "$root" "$base" || return 1
+    cd "$root/$base" || return 1
+    _in_repository_after_cd "$root" "$base" || return 1
     branch=`git branch --show-current` || return 1
     case $branch in
     ?*)
@@ -204,11 +209,10 @@ _resolve_directory()
     printf '%s\n' "$directory"
 }
 
-_cd_within_repository()
+_in_repository_after_cd()
 {
-    cd "$1/$2" || return 1
-    after=`pwd` || return 1
-    case $after in "$1" | "$1"/?*)
+    current=`pwd` || return 1
+    case $current in "$1" | "$1"/?*)
         return 0
     esac
     error_outside_repository "$1/$2"; return 1
