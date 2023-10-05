@@ -142,9 +142,25 @@ base()
 
 _find_cotree_root()
 {
-    root=`git rev-parse --git-common-dir`/.. || return 1
-    cd "$root" || return 1
-    pwd || return 1
+    prefix=`git rev-parse --show-prefix` || return 1
+    while :
+    do
+        case $prefix in
+        ?*)
+            cd .. || return 1
+            prefix=${prefix#*/}
+        ;;
+        '')
+            worktree=`git rev-parse --is-inside-work-tree` || return 1
+            case $worktree in true)
+                cd .. || return 1
+                prefix=`git rev-parse --show-prefix` || return 1
+                continue
+            esac
+            break
+        esac
+    done
+    pwd
 }
 
 _resolve_directory()
