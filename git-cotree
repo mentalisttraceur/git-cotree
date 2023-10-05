@@ -159,8 +159,17 @@ find_cotree_root()
             worktree=`git rev-parse --is-inside-work-tree` || return 1
             case $worktree in true)
                 cd .. || return 1
-                prefix=`git rev-parse --show-prefix` || return 1
-                continue
+                if prefix_or_error=`git rev-parse --show-prefix 2>&1`
+                then
+                    prefix=$prefix_or_error
+                    continue
+                fi
+                error=$prefix_or_error
+                case $error in 'fatal: not a git repository '*)
+                    error=${error#'fatal: not a git repository'}
+                    error='fatal: not a git co-tree repository'$error
+                esac
+                printf '%s\n' "$error" 1>&2; return 1
             esac
             break
         esac
