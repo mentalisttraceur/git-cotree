@@ -44,8 +44,7 @@ initialize()
 create()
 {
     case $# in 0) error_need_co_tree; return 1; esac
-    root=`git rev-parse --git-common-dir`/.. || return 1
-    root=`cd "$root" && pwd` || return 1
+    root=`_find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     case $# in 1)
         exec 3>&1
@@ -60,8 +59,7 @@ create()
 delete()
 {
     case $# in 0) error_need_co_tree; return 1; esac
-    root=`git rev-parse --git-common-dir`/.. || return 1
-    root=`cd "$root" && pwd` || return 1
+    root=`_find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     base=`git -C "$root" branch --show-current` || return 1
     branch=`git -C "$root/$directory" branch --show-current 2>/dev/null`
@@ -116,8 +114,7 @@ _directory_is_empty()
 base()
 {
     case $# in 0) error_need_commit_ish_or_co_tree; return 1; esac
-    root=`git rev-parse --git-common-dir`/.. || return 1
-    root=`cd "$root" && pwd` || return 1
+    root=`_find_cotree_root` || return 1
     base=`_resolve_directory "$root" "$1"` || return 1
     cd "$root" || return 1
     case $1 in . | .. | ./* | ../*) :;; *)
@@ -141,6 +138,13 @@ base()
         commit=`git -C "$root/$base" rev-parse HEAD` || return 1
         git update-ref --no-deref HEAD "$commit" || return 1
     esac
+}
+
+_find_cotree_root()
+{
+    root=`git rev-parse --git-common-dir`/.. || return 1
+    cd "$root" || return 1
+    pwd || return 1
 }
 
 _resolve_directory()
