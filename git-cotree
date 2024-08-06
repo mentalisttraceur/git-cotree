@@ -20,16 +20,16 @@ initialize()
         git commit --quiet --message 'git-cotree temporary commit' || return 1
     esac
     git config --local core.bare true || return 1
-    directory=`mktemp -d git-cotree-XXXXXX` || return 1
-    chmod =rwx "$directory" || return 1
-    git worktree add --no-checkout --quiet "$directory" "$base" || return 1
+    temporary=`mktemp -d git-cotree-XXXXXX` || return 1
+    worktree=$temporary/${base##*/}
+    git worktree add --no-checkout --quiet "$worktree" "$base" || return 1
     for name in * .*
     do
-        case $name in "$directory" | .. | . | .git) :;; *)
-            mv ./"$name" "$directory"/ || return 1
+        case $name in "$temporary" | .. | . | .git) :;; *)
+            mv ./"$name" "$worktree"/ || return 1
         esac
     done
-    cd "$directory" || return 1
+    cd "$worktree" || return 1
     git reset --quiet HEAD || return 1
     case $had_staged_changes in true)
         git reset --soft --quiet HEAD~1 || return 1
@@ -38,7 +38,8 @@ initialize()
     case $base in ?*/*)
         mkdir -p "${base%/*}" || return 1
     esac
-    git worktree move "$directory" "$base" || return 1
+    git worktree move "$worktree" "$base" || return 1
+    rmdir "$temporary" || return 1
 }
 
 create()
