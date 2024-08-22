@@ -239,10 +239,8 @@ _clean_up_if_cotree_name_had_slashes()
         case $directory in */*)
             directory=${directory%/*}
             case "$root/$directory" in "$current"/?*)
-                if error=`rmdir "$root/$directory" 2>&1`
+                if ! error=`rmdir "$root/$directory" 2>&1`
                 then
-                    continue
-                else
                     if _directory_is_empty "$root/$directory"
                     then
                         printf '%s\n' "$error" 1>&2; return 1
