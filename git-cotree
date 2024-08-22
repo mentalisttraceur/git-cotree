@@ -232,12 +232,12 @@ _clean_up_if_cotree_name_had_slashes()
     current=`pwd` || return 1
     case "$root/$directory" in "$current"/?*) :;; *)
         cd "$root" || return 1
+        current=`pwd` || return 1
     esac
     while :
     do
         case $directory in */*)
             directory=${directory%/*}
-            current=`pwd` || return 1
             case "$root/$directory" in "$current"/?*)
                 if error=`rmdir "$root/$directory" 2>&1`
                 then
