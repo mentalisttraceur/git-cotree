@@ -9,9 +9,9 @@ initialize()
         git log -n1 1>/dev/null
         return 1
     fi
-    base=`git symbolic-ref --quiet --short HEAD`
+    branch=`git symbolic-ref --quiet --short HEAD`
     case $? in
-    0) :;;
+    0) base=$branch;;
     1) base=$commit;;
     *) return 1
     esac
