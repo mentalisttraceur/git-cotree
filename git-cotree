@@ -122,7 +122,6 @@ collapse()
         git -C "$root" update-ref --no-deref HEAD "$commit" || return 1
     esac
     temporary=`mktemp -d git-cotree-XXXXXX` || return 1
-    chmod =rwx "$temporary" || return 1
     for name in * .*
     do
         case $name in "$temporary" | .. | . | .git) :;; *)
