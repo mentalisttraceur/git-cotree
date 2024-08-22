@@ -118,14 +118,15 @@ collapse()
     _in_repository_after_cd "$root" "$directory" || return 1
     _set_root_head_from_current_head || return 1
     temporary=`mktemp -d git-cotree-XXXXXX` || return 1
+    mv "$temporary" "$root"/ || return 1
+    touch "$temporary" || return 1
     for name in * .*
     do
-        case $name in "$temporary" | .. | . | .git) :;; *)
-            mv ./"$name" "$temporary"/ || return 1
+        case $name in  .. | . | .git) :;; *)
+            mv ./"$name" "$root/$temporary"/ || return 1
         esac
-        touch "$temporary/$temporary" "$temporary"/.git || return 1
+        touch "$root/$temporary"/.git || return 1
     done
-    mv "$temporary" "$root"/ || return 1
     cd "$root" || return 1
     git worktree remove --force "$root/$directory" || return 1
     _clean_up_if_cotree_name_had_slashes || return 1
