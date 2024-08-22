@@ -65,7 +65,7 @@ delete()
     branch=`
         cd "$root/$directory" 2>/dev/null || exit 0
         _in_repository_after_cd "$root" "$directory" || exit 1
-        git branch --show-current 2>/dev/null || exit 0
+        git branch --show-current
     ` || return 1
     git worktree remove $force "$root/$directory" || return 1
     _clean_up_if_cotree_name_had_slashes || return 1
