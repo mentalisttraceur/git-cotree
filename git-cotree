@@ -4,11 +4,15 @@
 
 initialize()
 {
-    git log -n1 --pretty=format:'' || return 1
+    if ! commit=`git rev-parse HEAD 2>/dev/null`
+    then
+        git log -n1 1>/dev/null
+        return 1
+    fi
     base=`git symbolic-ref --quiet --short HEAD`
     case $? in
     0) :;;
-    1) base=`git rev-parse HEAD` || return 1;;
+    1) base=$commit;;
     *) return 1
     esac
     root=`git rev-parse --show-toplevel` || return 1
