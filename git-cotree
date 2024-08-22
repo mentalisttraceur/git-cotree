@@ -5,9 +5,11 @@
 initialize()
 {
     git log -n1 --pretty=format:'' || return 1
-    base=`git branch --show-current` || return 1
-    case $base in '')
-        base=`git rev-parse HEAD` || return 1
+    base=`git symbolic-ref --quiet --short HEAD`
+    case $? in
+    0) :;;
+    1) base=`git rev-parse HEAD` || return 1;;
+    *) return 1
     esac
     root=`git rev-parse --show-toplevel` || return 1
     cd "$root" || return 1
@@ -61,11 +63,21 @@ delete()
     case $# in 0) error_need_co_tree; return 1; esac
     root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
-    base_branch=`git -C "$root" branch --show-current` || return 1
+    base_branch=`
+        git -C "$root" symbolic-ref --quiet --short HEAD
+        case $? in 0 | 1)
+             exit 0
+        esac
+        exit 1
+    ` || return 1
     branch=`
         cd "$root/$directory" 2>/dev/null || exit 0
         _in_repository_after_cd "$root" "$directory" || exit 1
-        git branch --show-current
+        git symbolic-ref --quiet --short HEAD
+        case $? in 0 | 1)
+             exit 0
+        esac
+        exit 1
     ` || return 1
     git worktree remove $force "$root/$directory" || return 1
     _clean_up_if_cotree_name_had_slashes || return 1
@@ -258,14 +270,17 @@ _directory_is_empty()
 
 _set_root_head_from_current_head()
 {
-    branch=`git branch --show-current` || return 1
-    case $branch in
-    ?*)
+    branch=`git symbolic-ref --quiet --short HEAD`
+    case $? in
+    0)
         git -C "$root" symbolic-ref HEAD "refs/heads/$branch" || return 1
     ;;
-    '')
+    1)
         commit=`git rev-parse HEAD` || return 1
         git -C "$root" update-ref --no-deref HEAD "$commit" || return 1
+    ;;
+    *)
+        return 1
     esac
 }
 
