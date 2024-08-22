@@ -61,7 +61,7 @@ delete()
     case $# in 0) error_need_co_tree; return 1; esac
     root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
-    base=`git -C "$root" branch --show-current` || return 1
+    base_branch=`git -C "$root" branch --show-current` || return 1
     branch=`
         cd "$root/$directory" 2>/dev/null || exit 0
         _in_repository_after_cd "$root" "$directory" || exit 1
@@ -69,7 +69,7 @@ delete()
     ` || return 1
     git worktree remove $force "$root/$directory" || return 1
     _clean_up_if_cotree_name_had_slashes || return 1
-    case $branch in "$base") :;; ?*)
+    case $branch in "$base_branch") :;; ?*)
         git branch --delete $force "$branch" || return 1
     esac
 }
