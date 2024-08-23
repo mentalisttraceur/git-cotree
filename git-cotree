@@ -324,14 +324,14 @@ help()
     git-cotree --collapse <co-tree>
 
 Options:
-    -h --help --usage       show this help text
-    -i --init --initialize  set up for using co-trees
-    -d --delete             delete this co-tree
-    -f --force              force deleting this co-tree
-    -D                      short for both --delete and --force
-    -b --base               set the default base for new co-tree branches
-    --show-root             show absolute path of co-tree repository root
-    -c --collapse           collapse this co-tree into the repository root
+    -h, --help, --usage       show this help text
+    -i, --init, --initialize  set up for using co-trees
+    -d, --delete              delete this co-tree
+    -f, --force               force deleting this co-tree
+    -D                        short for both --delete and --force
+    -b, --base                set the default base for new co-tree branches
+    --show-root               show absolute path of co-tree repository root
+    -c, --collapse            collapse this co-tree into the repository root
 ' || return 1
 }
 
