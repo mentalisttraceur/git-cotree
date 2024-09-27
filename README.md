@@ -1,4 +1,4 @@
-# Git Co-Tree
+# Git Co-Tree: `git worktree` for humans
 
 `git-cotree` implements an ergonomic approach to
 using multiple Git work trees which I am calling
