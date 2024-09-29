@@ -18,7 +18,7 @@ It only needs `git` and standard system utilities.
 ## Why is it called "co"-tree?
 
 Both "C.O." for "checkout" and like the
-["co"](https://en.wiktionary.org/wiki/co-#English)
+"[co](https://en.wiktionary.org/wiki/co-#English)"
 in "coroutine": multiple work trees,
 **c**hecked **o**ut **co**ncurrently.
 
