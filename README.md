@@ -21,16 +21,6 @@ Basically, `git-cotree` provides a great developer
 experience if you want to use or try using two or
 more work trees at the same time.
 
-**Warning!** `git-cotree` currently assumes you
-start with the "normal" setup: you have one work
-tree which contains your `.git` directory. If
-you don't know what this means you're probably
-fine, but if you know you did something like
-`git clone` with the `--bare` option, `git init`
-with the `--separate-git-dir` option, or `git
-worktree add`, then make sure you understand
-what `git-cotree` does before running it.
-
 Run `git-cotree --initialize` (can be
 shortened to `--init` or `-i`) inside
 an existing repo to get started.
