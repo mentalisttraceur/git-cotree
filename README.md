@@ -15,18 +15,18 @@ It only needs `git` and standard system utilities.
 > it can be invoked as `git cotree`.
 
 
+## Why is it called "co"-tree?
+
+Both "C.O." for "checkout" and like the
+["co"](https://en.wiktionary.org/wiki/co-#English)
+in "coroutine": multiple work trees,
+**c**hecked **o**ut **co**ncurrently.
+
+
 Concretely, `git-cotree` is a minimalistic,
 opinionated, and ergonomic wrapper/"porcelain"
 around the core functionality of `git worktree`,
 `git branch`, and `git checkout`.
-
-The "co" in "cotree" has a double meaning:
-
-1. It is like the "co" in "coroutine", suggesting
-   multiple concurrent and equal Git work trees.
-2. It also stands for "check out", because the
-   `git-cotree` command largely takes the place
-   of `git checkout` in this workflow.
 
 Basically, `git-cotree` provides a great developer
 experience if you want to use or try using two or
