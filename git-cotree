@@ -17,8 +17,8 @@ initialize()
     esac
     root=`git rev-parse --show-toplevel` || return 1
     cd "$root" || return 1
-    case `git rev-parse --git-common-dir` in .git) :;; *)
-        error_missing_git_directory; return 1
+    case `git rev-parse --git-common-dir` in "`git rev-parse --git-dir`") :;; *)
+        error_not_in_main_worktree; return 1
     esac
     git diff --staged --quiet
     case $? in 1)
@@ -287,9 +287,9 @@ _set_root_head_from_current_head()
     esac
 }
 
-error_missing_git_directory()
+error_not_in_main_worktree()
 {
-    printf '%s\n' 'fatal: missing .git directory' 1>&2
+    printf '%s\n' 'fatal: this operation must be run in the main work tree' 1>&2
 }
 
 error_need_commit_ish_or_co_tree()
