@@ -23,6 +23,11 @@ in "coroutine": multiple work trees,
 **c**hecked **o**ut **co**ncurrently.
 
 
+## TODO: more docs
+
+Most of [the `git worktree` documentation](https://git-scm.com/docs/git-worktree)
+applies.
+
 Concretely, `git-cotree` is a minimalistic,
 opinionated, and ergonomic wrapper/"porcelain"
 around the core functionality of `git worktree`,
