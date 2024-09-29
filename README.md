@@ -4,6 +4,17 @@
 using multiple Git work trees which I am calling
 "co-trees".
 
+
+## Installation
+
+Just copy the `git-cotree` script from this repo.
+It only needs `git` and standard system utilities.
+
+> [!TIP]
+> Once `git-cotree` is in your `PATH`,
+> it can be invoked as `git cotree`.
+
+
 Concretely, `git-cotree` is a minimalistic,
 opinionated, and ergonomic wrapper/"porcelain"
 around the core functionality of `git worktree`,
