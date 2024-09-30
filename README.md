@@ -1,8 +1,14 @@
 # Git Co-Tree: `git worktree` for humans
 
-`git-cotree` implements an ergonomic approach to
-using multiple Git work trees which I am calling
-"co-trees".
+`git-cotree` is a nice way to have more than
+one branch checked out at the same time.
+
+`git-cotree` is the "every branch is just a
+directory" approach to Git.
+
+`git-cotree` is what you wanted when you tried making
+[`git worktree`](https://git-scm.com/docs/git-worktree)
+part of your day-to-day workflow.
 
 
 ## Installation
