@@ -4,8 +4,8 @@
 one branch checked out at the same time.
 
 `git-cotree` lets you effortlessly and quickly
-switch between normal Git and an "every branch
-is its own directory" way of using Git.
+switch back and forth between normal Git and an
+"every branch is its own directory" approach.
 
 `git-cotree` streamlines the UX provided by
 [`git worktree`](https://git-scm.com/docs/git-worktree)
