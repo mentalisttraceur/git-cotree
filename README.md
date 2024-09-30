@@ -7,9 +7,9 @@ one branch checked out at the same time.
 switch between normal Git and an "every branch
 is its own directory" way of using Git.
 
-`git-cotree` is streamlined so that the
-manual overhead of managing more work trees
-will never dissuade you from using them.
+`git-cotree` streamlines the UX provided by
+[`git worktree`](https://git-scm.com/docs/git-worktree)
+in ways you might find pleasant and convenient.
 
 
 ## Installation
@@ -24,10 +24,11 @@ The only dependency is `git`.
 
 ## Why is it called "co"-tree?
 
-Both "C.O." for "checkout" and like the
-"[co](https://en.wiktionary.org/wiki/co-#English)"
-in "coroutine": multiple work trees,
-**c**hecked **o**ut **co**ncurrently.
+Like the "[co](https://en.wiktionary.org/wiki/co-#English)"
+in "coroutine": multiple work trees, concurrently.
+
+(Also, `git cotree <branch>` **c**hecks **o**ut
+`<branch>` into its own work tree.)
 
 
 ## TODO: more docs
