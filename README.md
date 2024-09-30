@@ -15,15 +15,11 @@ will never dissuade you from using them.
 ## Installation
 
 Just copy the `git-cotree` script from this repo.
+The only dependency is `git`.
 
 > [!TIP]
 > Once `git-cotree` is in your `PATH`,
 > it can be invoked as `git cotree`.
-
-On Linux (incl. WSL and Termux), BSDs, and macOS,
-the only dependency is `git`. On Windows (outside
-of WSL), you'll also need to get `mktemp` if your
-Git install didn't already come with it.
 
 
 ## Why is it called "co"-tree?
