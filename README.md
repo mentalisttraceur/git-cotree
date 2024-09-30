@@ -35,9 +35,8 @@ in "coroutine": multiple work trees,
 Most of [the `git worktree` documentation](https://git-scm.com/docs/git-worktree)
 applies.
 
-Concretely, `git-cotree` is a minimalistic,
-opinionated, and ergonomic wrapper/"porcelain"
-around the core functionality of `git worktree`,
+Concretely, `git-cotree` is a minimal wrapper
+combining the core features of `git worktree`,
 `git branch`, and `git checkout`.
 
 Basically, `git-cotree` provides a great developer
