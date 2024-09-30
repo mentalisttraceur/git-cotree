@@ -39,10 +39,6 @@ Concretely, `git-cotree` is a minimal wrapper
 combining the core features of `git worktree`,
 `git branch`, and `git checkout`.
 
-Basically, `git-cotree` provides a great developer
-experience if you want to use or try using two or
-more work trees at the same time.
-
 Run `git-cotree --initialize` (can be
 shortened to `--init` or `-i`) inside
 an existing repo to get started.
