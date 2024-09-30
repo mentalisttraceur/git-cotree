@@ -3,9 +3,9 @@
 `git-cotree` is a nice way to have more than
 one branch checked out at the same time.
 
-`git-cotree` lets you try an "every checked
-out branch is a directory" approach to Git
-(and easily switch back whenever you want)!
+`git-cotree` lets you effortlessly switch
+between normal Git and an "every branch is
+its own directory" setup, even mid-workflow.
 
 `git-cotree` is streamlined so that the
 manual overhead of managing more work trees
