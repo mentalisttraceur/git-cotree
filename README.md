@@ -7,9 +7,9 @@ one branch checked out at the same time.
 out branch is a directory" approach to Git
 (and easily switch back whenever you want)!
 
-`git-cotree` is what you wanted when you tried making
-[`git worktree`](https://git-scm.com/docs/git-worktree)
-part of your day-to-day workflow.
+`git-cotree` is streamlined so that the
+manual overhead of managing more work trees
+will never dissuade you from using them.
 
 
 ## Installation
