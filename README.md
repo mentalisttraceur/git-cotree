@@ -27,9 +27,6 @@ The only dependency is `git`.
 Like the "[co](https://en.wiktionary.org/wiki/co-#English)"
 in "coroutine": multiple work trees, concurrently.
 
-(Also, `git cotree <branch>` **c**hecks **o**ut
-`<branch>` into its own work tree.)
-
 
 ## TODO: more docs
 
