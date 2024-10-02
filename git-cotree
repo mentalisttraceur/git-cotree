@@ -17,17 +17,21 @@ initialize()
     esac
     root=`git rev-parse --show-toplevel` || return 1
     cd "$root" || return 1
-    case `git rev-parse --git-common-dir` in "`git rev-parse --git-dir`") :;; *)
+    git_common_dir=`git rev-parse --git-common-dir` || return 1
+    case $git_common_dir in "`git rev-parse --git-dir`") :;; *)
         error_not_in_main_worktree; return 1
     esac
-    git diff --staged --quiet
-    case $? in 1)
-        had_staged_changes=true
-        git commit --quiet --message 'git-cotree temporary commit' || return 1
-    esac
+    rebasing_on=$git_common_dir/rebase-merge/head-name
+    if test -f "$rebasing_on"
+    then
+        ref=`cat "$rebasing_on"` || return 1
+        worktree_name=`git rev-parse --abbrev-ref "$ref"` || return 1
+    else
+        worktree_name=$base
+    fi
     git config --local core.bare true || return 1
     temporary=`mktemp -d git-cotree-XXXXXX` || return 1
-    worktree=$temporary/${base##*/}
+    worktree=$temporary/${worktree_name##*/}
     git worktree add --no-checkout --quiet "$worktree" "$base" || return 1
     for name in * .*
     do
@@ -36,15 +40,14 @@ initialize()
         esac
     done
     cd "$worktree" || return 1
-    git reset --quiet HEAD || return 1
-    case $had_staged_changes in true)
-        git reset --soft --quiet HEAD~1 || return 1
-    esac
+    git reset --soft --quiet HEAD || return 1
+    git_dir=`git rev-parse --git-dir` || return 1
     cd "$root" || return 1
-    case $base in ?*/*)
-        mkdir -p "${base%/*}" || return 1
+    _move_repository_state "$git_common_dir" "$git_dir" || return 1
+    case $worktree_name in ?*/*)
+        mkdir -p "${worktree_name%/*}" || return 1
     esac
-    git worktree move "$worktree" "$base" || return 1
+    git worktree move "$worktree" "$worktree_name" || return 1
     rmdir "$temporary" || return 1
 }
 
@@ -120,6 +123,8 @@ collapse()
     directory=`_resolve_directory "$root" "$1"` || return 1
     cd "$root/$directory" || return 1
     _in_repository_after_cd "$root" "$directory" || return 1
+    git_common_dir=`git rev-parse --git-common-dir` || return 1
+    git_dir=`git rev-parse --git-dir` || return 1
     _set_root_head_from_current_head || return 1
     temporary=`mktemp -d git-cotree-XXXXXX` || return 1
     mv "$temporary" "$root"/ || return 1
@@ -132,6 +137,7 @@ collapse()
         touch "$root/$temporary"/.git || return 1
     done
     cd "$root" || return 1
+    _move_repository_state "$git_dir" "$git_common_dir" || return 1
     git worktree remove --force "$root/$directory" || return 1
     _clean_up_if_cotree_name_had_slashes || return 1
     cd "$root/$temporary" || return 1
@@ -176,6 +182,22 @@ find_cotree_root()
         esac
     done
     pwd || return 1
+}
+
+_move_repository_state()
+{
+    source=$1
+    target=$2
+    for name in index sequencer \
+                AUTO_MERGE MERGE_AUTOSTASH MERGE_HEAD MERGE_MODE MERGE_MSG \
+                REBASE_AUTOSTASH REBASE_HEAD \
+                rebase-apply rebase-merge rebased-patches
+    do
+        if test -e "$source/$name"
+        then
+            mv "$source/$name" "$target/$name" || return 1
+        fi
+    done
 }
 
 _resolve_directory()
