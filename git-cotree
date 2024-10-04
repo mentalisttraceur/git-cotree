@@ -123,6 +123,11 @@ collapse()
     directory=`_resolve_directory "$root" "$1"` || return 1
     cd "$root/$directory" || return 1
     _in_repository_after_cd "$root" "$directory" || return 1
+    if ! git status 1>/dev/null 2>&1
+    then
+        git worktree remove "$root/$directory"
+        return 1
+    fi
     git_common_dir=`git rev-parse --git-common-dir` || return 1
     git_dir=`git rev-parse --git-dir` || return 1
     _set_root_head_from_current_head || return 1
