@@ -123,11 +123,11 @@ collapse()
     directory=`_resolve_directory "$root" "$1"` || return 1
     cd "$root/$directory" || return 1
     _in_repository_after_cd "$root" "$directory" || return 1
-    if ! git status 1>/dev/null 2>&1
-    then
+    in_worktree=`git rev-parse --is-inside-work-tree` || return 1
+    case $in_worktree in false)
         git worktree remove "$root/$directory"
         return 1
-    fi
+    esac
     git_common_dir=`git rev-parse --git-common-dir` || return 1
     git_dir=`git rev-parse --git-dir` || return 1
     _set_root_head_from_current_head || return 1
@@ -168,8 +168,8 @@ find_cotree_root()
             prefix=${prefix#*/}
         ;;
         '')
-            worktree=`git rev-parse --is-inside-work-tree` || return 1
-            case $worktree in true)
+            in_worktree=`git rev-parse --is-inside-work-tree` || return 1
+            case $in_worktree in true)
                 cd .. || return 1
                 if prefix_or_error=`git rev-parse --show-prefix 2>&1`
                 then
