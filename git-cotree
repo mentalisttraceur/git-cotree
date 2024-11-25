@@ -195,6 +195,7 @@ _move_repository_state()
     target=$2
     for name in index sequencer \
                 CHERRY_PICK_HEAD \
+                FETCH_HEAD \
                 AUTO_MERGE MERGE_AUTOSTASH MERGE_HEAD MERGE_MODE MERGE_MSG \
                 REBASE_AUTOSTASH REBASE_HEAD \
                 rebase-apply rebase-merge rebased-patches \
