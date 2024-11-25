@@ -197,7 +197,8 @@ _move_repository_state()
                 CHERRY_PICK_HEAD \
                 AUTO_MERGE MERGE_AUTOSTASH MERGE_HEAD MERGE_MODE MERGE_MSG \
                 REBASE_AUTOSTASH REBASE_HEAD \
-                rebase-apply rebase-merge rebased-patches
+                rebase-apply rebase-merge rebased-patches \
+                REVERT_HEAD
     do
         if test -e "$source/$name"
         then
