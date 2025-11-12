@@ -1,4 +1,4 @@
-# Git Co-Tree: `git worktree` for humans
+# Git Cotree: `git worktree` for humans
 
 `git-cotree` is a nice way to have more than
 one branch checked out at the same time.
@@ -42,7 +42,7 @@ shortened to `--init` or `-i`) inside
 an existing repo to get started.
 
 1. Your repository will be rearranged and
-   set up for the co-tree workflow.
+   set up for the cotree workflow.
 2. The changes are entirely local. Your next push
    won't change anything for your teammates,
    unless you somehow defeat Git in weird ways.

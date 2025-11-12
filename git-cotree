@@ -53,7 +53,7 @@ initialize()
 
 create()
 {
-    case $# in 0) error_need_co_tree; return 1; esac
+    case $# in 0) error_need_cotree; return 1; esac
     root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     case $# in 1)
@@ -67,7 +67,7 @@ create()
 
 delete()
 {
-    case $# in 0) error_need_co_tree; return 1; esac
+    case $# in 0) error_need_cotree; return 1; esac
     root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     base_branch=`
@@ -95,7 +95,7 @@ delete()
 
 base()
 {
-    case $# in 0) error_need_commit_ish_or_co_tree; return 1; esac
+    case $# in 0) error_need_commit_ish_or_cotree; return 1; esac
     root=`find_cotree_root` || return 1
     base=`_resolve_directory "$root" "$1"` || return 1
     cd "$root" || return 1
@@ -118,7 +118,7 @@ base()
 
 collapse()
 {
-    case $# in 0) error_need_co_tree; return 1; esac
+    case $# in 0) error_need_cotree; return 1; esac
     root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     cd "$root/$directory" || return 1
@@ -179,7 +179,7 @@ find_cotree_root()
                 error=$prefix_or_error
                 case $error in 'fatal: not a git repository '*)
                     error=${error#'fatal: not a git repository'}
-                    error='fatal: not a git co-tree repository'$error
+                    error='fatal: not a git cotree repository'$error
                 esac
                 printf '%s\n' "$error" 1>&2; return 1
             esac
@@ -322,9 +322,9 @@ error_not_in_main_worktree()
     printf '%s\n' 'fatal: this operation must be run in the main work tree' 1>&2
 }
 
-error_need_commit_ish_or_co_tree()
+error_need_commit_ish_or_cotree()
 {
-    printf '%s\n' 'fatal: need commit-ish or co-tree argument' 1>&2
+    printf '%s\n' 'fatal: need commit-ish or cotree argument' 1>&2
 }
 
 error_outside_repository()
@@ -332,9 +332,9 @@ error_outside_repository()
     printf '%s\n' "fatal: outside repository: $1" 1>&2
 }
 
-error_need_co_tree()
+error_need_cotree()
 {
-    printf '%s\n' 'fatal: need co-tree argument' 1>&2
+    printf '%s\n' 'fatal: need cotree argument' 1>&2
 }
 
 bad_option()
@@ -346,22 +346,22 @@ help()
 {
     printf '%s' \
 'Usage:
-    git-cotree <co-tree> [<commit-ish>]
-    git-cotree --delete [--force] <co-tree>
+    git-cotree <cotree> [<commit-ish>]
+    git-cotree --delete [--force] <cotree>
     git-cotree --initialize
-    git-cotree --base (<commit-ish> | <co-tree>)
+    git-cotree --base (<commit-ish> | <cotree>)
     git-cotree --show-root
-    git-cotree --collapse <co-tree>
+    git-cotree --collapse <cotree>
 
 Options:
     -h, --help, --usage       show this help text
-    -i, --init, --initialize  set up for using co-trees
-    -d, --delete              delete this co-tree
-    -f, --force               force deleting this co-tree
+    -i, --init, --initialize  set up for using cotrees
+    -d, --delete              delete this cotree
+    -f, --force               force deleting this cotree
     -D                        short for both --delete and --force
-    -b, --base                set the default base for new co-tree branches
-    --show-root               show absolute path of co-tree repository root
-    -c, --collapse            collapse this co-tree into the repository root
+    -b, --base                set the default base for new cotree branches
+    --show-root               show absolute path of cotree repository root
+    -c, --collapse            collapse this cotree into the repository root
 ' || return 1
 }
 
