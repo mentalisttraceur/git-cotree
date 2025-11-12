@@ -132,6 +132,21 @@ collapse()
     git_dir=`git rev-parse --git-dir` || return 1
     _set_root_head_from_current_head || return 1
     temporary=`mktemp -d git-cotree-XXXXXX` || return 1
+    collisions=false
+    for name in * .*
+    do
+        case $name in .. | . | .git) :;; *)
+            if test -e "$root/$name"
+            then
+                collisions=true
+                error_would_collide "$name"
+            fi
+        esac
+    done
+    case $collisions in true)
+        rmdir "$temporary"
+        return 1
+    esac
     touch "$temporary"/.git || return 1
     mv "$temporary" "$root"/ || return 1
     touch "$temporary" || return 1
@@ -335,6 +350,11 @@ error_outside_repository()
 error_need_cotree()
 {
     printf '%s\n' 'fatal: need cotree argument' 1>&2
+}
+
+error_would_collide()
+{
+    printf '%s\n' "fatal: would collide: $1" 1>&2
 }
 
 bad_option()
