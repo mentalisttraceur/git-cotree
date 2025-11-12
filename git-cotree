@@ -136,7 +136,7 @@ collapse()
     touch "$temporary" || return 1
     for name in * .*
     do
-        case $name in  .. | . | .git) :;; *)
+        case $name in .. | . | .git) :;; *)
             mv ./"$name" "$root/$temporary"/ || return 1
         esac
         touch "$root/$temporary"/.git || return 1
