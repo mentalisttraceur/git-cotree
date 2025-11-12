@@ -132,6 +132,7 @@ collapse()
     git_dir=`git rev-parse --git-dir` || return 1
     _set_root_head_from_current_head || return 1
     temporary=`mktemp -d git-cotree-XXXXXX` || return 1
+    touch "$temporary"/.git || return 1
     mv "$temporary" "$root"/ || return 1
     touch "$temporary" || return 1
     for name in * .*
@@ -139,7 +140,6 @@ collapse()
         case $name in .. | . | .git) :;; *)
             mv ./"$name" "$root/$temporary"/ || return 1
         esac
-        touch "$root/$temporary"/.git || return 1
     done
     cd "$root" || return 1
     _move_repository_state "$git_dir" "$git_common_dir" || return 1
