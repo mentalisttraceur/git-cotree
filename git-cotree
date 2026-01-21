@@ -57,9 +57,13 @@ create()
     root=`find_cotree_root` || return 1
     directory=`_resolve_directory "$root" "$1"` || return 1
     case $# in 1)
-        git worktree add "$root/$directory" "$directory" 2>/dev/null \
-        || git worktree add "$root/$directory" -b "$directory" \
-        || return 1
+        if ! error=`git worktree add "$root/$directory" "$directory" 2>&1`
+        then
+            case $error in 'fatal: invalid reference: '*) :;; *)
+                printf '%s\n' "$error" 1>&2; return 1
+            esac
+            git worktree add "$root/$directory" -b "$directory" || return 1
+        fi
         return 0
     esac
     git worktree add "$root/$directory" -b "$directory" "$2" || return 1
